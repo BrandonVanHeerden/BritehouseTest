@@ -1,0 +1,6 @@
+@CorporateNewsSystem_HostAddress = http://localhost:5222
+
+GET {{CorporateNewsSystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
