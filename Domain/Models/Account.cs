@@ -8,10 +8,10 @@ namespace Domain.Models
 {
     public class Account:BaseModel
     {
-        public Guid UserId { get; set; }
-        public byte[] Password { get; set; }
-        public string RefreshToken { get; set; }
-        public string OTP { get; set; }
-        public User User { get; set; }
+        public Guid UserId { get; private set; }
+        public byte[] Password { get; private set; } 
+        public string RefreshToken { get; private set; }
+        public string OTP { get; private set; }
+        public User User { get; private set; }
     }
 }
