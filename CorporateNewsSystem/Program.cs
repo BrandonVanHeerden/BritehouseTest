@@ -1,13 +1,74 @@
 using Api.Middleware;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Domain.Configuration;
 using Infrastructure.Persistance;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Security.Claims;
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSwaggerGen(options =>
+{
+    var provider = builder.Services.BuildServiceProvider()
+        .GetRequiredService<IApiVersionDescriptionProvider>();
 
+    foreach (var description in provider.ApiVersionDescriptions)
+    {
+        options.SwaggerDoc(description.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo()
+        {
+            Title = $"Corporate News API {description.ApiVersion}",
+            Version = description.ApiVersion.ToString()
+        });
+    }
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Authorization header using the Bearer scheme",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer"
+    });
+
+    options.AddSecurityRequirement(
+        new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                    {Reference = new OpenApiReference{Id = "Bearer", Type = ReferenceType.SecurityScheme} },
+                new List<string>()
+            }
+        });
+    options.OrderActionsBy((apiDesc) => $"{apiDesc.HttpMethod}");
+
+    //  options.EnableAnnotations();
+
+});
+var jwtConfig = builder.Configuration.GetSection("JWTCredentials").Get<JWTConfiguration>();
+// Add services to the container.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
+
+AddJwtBearer(
+        opt =>
+        {
+            opt.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtConfig.Issuer,
+                ValidAudience = jwtConfig.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SecretKey)),
+                ClockSkew = TimeSpan.Zero,
+                RoleClaimType = ClaimTypes.Role
+            };
+            opt.IncludeErrorDetails = true;
+            opt.TokenValidationParameters.NameClaimType = "name";
+        });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -32,6 +93,9 @@ builder.Services.AddApiVersioning(options =>
     options.GroupNameFormat = "'v'V";
     options.SubstituteApiVersionInUrl = true;
 });
+
+builder.Services.AddSingleton(jwtConfig!);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
