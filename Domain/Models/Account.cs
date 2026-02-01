@@ -13,5 +13,17 @@ namespace Domain.Models
         public string RefreshToken { get; private set; }
         public string OTP { get; private set; }
         public User User { get; private set; }
+
+        public Account()
+        {
+            
+        }
+        public Account(Guid userId, byte[] password, string refreshToken, string lastModifiedUser)
+        {
+            UserId = userId;
+            Password = password;
+            RefreshToken = refreshToken;
+            LastModifiedUser = lastModifiedUser;
+        }
     }
 }

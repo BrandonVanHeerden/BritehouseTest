@@ -9,7 +9,7 @@ namespace Domain.Abstraction.Application
 {
     public interface IJwtService
     {
-        IEnumerable<Claim> GetAdminClaims(string userId, string account, bool accountActive, IEnumerable<string> roles = null);
+        IEnumerable<Claim> GetClaims(string userId, string account, bool accountActive, IEnumerable<string> roles = null);
         Task<string> GenerateAsync(IEnumerable<Claim> claims);
         (string refreshToken, DateTime expireDateTime) GenerateRefreshToken();
     }
