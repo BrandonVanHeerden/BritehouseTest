@@ -1,3 +1,4 @@
+using Api.Extensions;
 using Api.Middleware;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
@@ -70,6 +71,10 @@ AddJwtBearer(
             opt.TokenValidationParameters.NameClaimType = "name";
         });
 builder.Services.AddControllers();
+builder.Services.AddApplicationServices();
+builder.Services.AddApplicationSingletonServices();
+builder.Services.AddRepositories();
+builder.Services.AddInfrastructureServices();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
