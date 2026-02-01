@@ -1,3 +1,4 @@
+using Api.Middleware;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Infrastructure.Persistance;
@@ -39,8 +40,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
