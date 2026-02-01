@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
@@ -100,7 +101,8 @@ builder.Services.AddApiVersioning(options =>
 });
 
 builder.Services.AddSingleton(jwtConfig!);
-
+var applicationAssembly = Assembly.Load("Application");
+builder.Services.AddMediatR(m => m.RegisterServicesFromAssembly(applicationAssembly));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
