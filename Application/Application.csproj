@@ -8,4 +8,12 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Domain\Domain.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Queries\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="MediatR" Version="14.0.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.9" />
+	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
+	</ItemGroup>
 </Project>
