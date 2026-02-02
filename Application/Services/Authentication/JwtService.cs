@@ -17,7 +17,7 @@ namespace Application.Services.Authentication
             _jwtConfiguration = jwtConfiguration;
         }
 
-        public IEnumerable<Claim> GetAdminClaims(string userId, string account, bool accountActive, IEnumerable<string> roles = null)
+        public IEnumerable<Claim> GetClaims(string userId, string account, bool accountActive, IEnumerable<string> roles = null)
         {
             var claims = new List<Claim> {
             new Claim("UserId",userId),

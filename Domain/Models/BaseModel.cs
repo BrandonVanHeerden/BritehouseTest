@@ -8,9 +8,21 @@ namespace Domain.Models
 {
     public class BaseModel
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; private set; } = Guid.NewGuid();
         public bool IsActive { get; private set; }
         public DateTime LastModifiedDate { get; private set; }
-        public string LastModifiedUser { get; private set; } = string.Empty;
+        public string LastModifiedUser { get; set; } = string.Empty;
+
+        public BaseModel()
+        {
+            Id = Guid.NewGuid();
+            LastModifiedDate = DateTime.Now;
+        }
+        public BaseModel(string lastModifiedUser)
+        {
+            Id = Guid.NewGuid();
+            LastModifiedDate = DateTime.Now;
+            lastModifiedUser = lastModifiedUser;
+        }
     }
 }

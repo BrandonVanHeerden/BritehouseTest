@@ -16,6 +16,21 @@ namespace Domain.Models
         public string? IdNumber { get; private set; } = string.Empty;      
         public ICollection<Article> Articles { get; private set; } = new List<Article>();
         public ICollection<UserRole> UserRoles { get; private set; } = new List<UserRole>();
+        public User()
+        {
+            
+        }
+        public User(string name, string surname, string email, string cell, string idNumber, string lastModifiedUser)
+        {
+            new BaseModel();
+            Name = name;
+            Surname = surname;
+            Email = email;
+            CellNo = cell;
+            IdNumber = idNumber;
+            LastModifiedUser = lastModifiedUser;
+        }     
 
     }
+   
 }

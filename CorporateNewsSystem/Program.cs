@@ -1,7 +1,9 @@
 using Api.Extensions;
 using Api.Middleware;
+using Application.Services.Authentication;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Domain.Abstraction.Application;
 using Domain.Configuration;
 using Infrastructure.Persistance;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -99,6 +101,7 @@ builder.Services.AddApiVersioning(options =>
     options.GroupNameFormat = "'v'V";
     options.SubstituteApiVersionInUrl = true;
 });
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSingleton(jwtConfig!);
 var applicationAssembly = Assembly.Load("Application");
