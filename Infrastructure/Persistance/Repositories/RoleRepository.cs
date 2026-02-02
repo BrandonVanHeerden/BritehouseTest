@@ -32,5 +32,12 @@ namespace Infrastructure.Persistance.Repositories
                 .Select(ur => ur.Role)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Role>> GetAllActiveRolesAsync()
+        {
+            return await _context.Roles
+                .Where(ur => ur.IsActive == true)               
+                .ToListAsync();
+        }
     }
 }

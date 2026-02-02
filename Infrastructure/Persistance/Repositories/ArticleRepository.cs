@@ -57,5 +57,17 @@ namespace Infrastructure.Persistance.Repositories
         }
         public async Task Add(Article article)
        => await _context.Articles.AddAsync(article);
+
+        public async Task<Article?> GetByIdAsync(Guid id, CancellationToken ct)
+        {
+            return await _context.Articles
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(x => x.Id == id, ct);
+        }
+
+        public void Remove(Article article)
+        {
+            _context.Articles.Remove(article);
+        }
     }
 }

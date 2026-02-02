@@ -9,6 +9,7 @@ namespace Domain.Abstraction.Infrastructure
 {
     public interface IRoleRepository
     {
+        Task<IEnumerable<Role>> GetAllActiveRolesAsync();
         Task<Role?> GetByNameAsync(string roleName);
         Task<IEnumerable<Role>> GetRolesForUserAsync(Guid userId);
     }

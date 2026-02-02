@@ -11,6 +11,8 @@ namespace Domain.Abstraction.Infrastructure
     public interface IArticleRepository
     {
         Task Add(Article article);
+        Task<Article?> GetByIdAsync(Guid id, CancellationToken ct);
         Task<PagedList<ArticleModel>> GetPagedArticlesAsync(int pageNumber, int pageSize, string? searchTerm, bool onlyActive, CancellationToken cancellationToken = default);
+        void Remove(Article article);
     }
 }
