@@ -8,6 +8,7 @@ namespace Domain.Abstraction.Application
 {
     public interface ICurrentUserService
     {
+        string GetCurrentUserAccount();
         Guid GetCurrentUserId();
     }
 }

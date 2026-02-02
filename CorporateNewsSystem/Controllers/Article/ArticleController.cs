@@ -24,7 +24,7 @@ namespace Api.Controllers.Article
 
         [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
         [MapToApiVersion(1)]
-        [HttpPost("admin")]
+        [HttpPost("admin/create")]
         public async Task<IActionResult> CreateArticle([FromBody] AdminCreateArticleCommand command, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(command, cancellationToken);
@@ -33,10 +33,19 @@ namespace Api.Controllers.Article
         }
         [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
         [MapToApiVersion(1)]
-        [HttpDelete("admin")]
+        [HttpDelete("admin/delete")]
         public async Task<IActionResult> DeleteArticle([FromBody] AdminDeleteArticleCommand command, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(command, cancellationToken);
+            return result.ToActionResult(this);
+
+        }
+        [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
+        [MapToApiVersion(1)]
+        [HttpPut("admin/update/{Id}")]
+        public async Task<IActionResult> UpdateArticle([FromRoute]Guid Id,[FromBody] AdminUpdateArticleCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new AdminUpdateArticleCommand(Id, command.Title, command.Summary,command.Content,command.EndDate), cancellationToken);
             return result.ToActionResult(this);
 
         }

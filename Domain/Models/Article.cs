@@ -34,6 +34,16 @@ namespace Infrastructure.Persistance.DataModels
             EndDate = endDate;
 
         }
+        public Article(string title, string summary, string content, Guid userId,  DateTime? endDate, string createdBy)
+        {
+            new BaseModel(createdBy);
+            Title = title;
+            Summary = summary;
+            Content = content;
+            UserId = userId;
+            EndDate = endDate;
+
+        }
 
     }
 }

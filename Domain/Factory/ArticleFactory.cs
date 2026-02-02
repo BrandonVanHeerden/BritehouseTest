@@ -10,15 +10,26 @@ namespace Domain.Factory
     public static class ArticleFactory
     {
         public static Article Create(
-    string title,
-    string summary,
-    string content,
-    Guid userId,
-    DateTime publishedDate,
-    DateTime? endDate,
-    string createdBy)
+                                string title,
+                                string summary,
+                                string content,
+                                Guid userId,
+                                DateTime publishedDate,
+                                DateTime? endDate,
+                                string createdBy)
         {
             return new Article(title,summary,content,userId,publishedDate,null,createdBy);
+        }
+
+        public static Article Update(
+                               string title,
+                               string summary,
+                               string content,
+                               Guid userId,
+                               DateTime? endDate,
+                               string createdBy)
+        {
+            return new Article(title, summary, content, userId,  endDate, createdBy);
         }
     }
 }

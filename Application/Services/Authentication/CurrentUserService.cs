@@ -28,5 +28,10 @@ namespace Application.Services.Authentication
 
             return Guid.Empty;
         }
+        public string GetCurrentUserAccount()
+        {
+            var email = _http.HttpContext.User.Claims?.FirstOrDefault(x => x.Type == "Account")?.Value;
+            return email;
+        }
     }
 }
