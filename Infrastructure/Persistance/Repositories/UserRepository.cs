@@ -38,5 +38,13 @@ namespace Infrastructure.Persistance.Repositories
             return _context.Users
                 .AnyAsync(u => u.Email == email);
         }
+
+        public Task<User?> GetByIdAsync(Guid id)
+        {
+            return _context.Users
+                .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                .SingleOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

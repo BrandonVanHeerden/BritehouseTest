@@ -13,5 +13,6 @@ namespace Domain.Abstraction.Infrastructure
         Task<bool> ExistsByEmailAsync(string email);
         Task<User?> GetByEmailAsync(string email);
         Task<User?> GetByEmailWithRolesAsync(string email);
+        Task<User?> GetByIdAsync(Guid id);
     }
 }

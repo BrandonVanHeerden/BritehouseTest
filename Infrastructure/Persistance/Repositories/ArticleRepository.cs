@@ -1,6 +1,7 @@
 ﻿using Application.Dto;
 using Domain.Abstraction.Infrastructure;
 using Domain.Models;
+using Infrastructure.Persistance.DataModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -54,5 +55,7 @@ namespace Infrastructure.Persistance.Repositories
 
             return new PagedList<ArticleModel>(items, totalCount, pageNumber, pageSize);
         }
+        public async Task Add(Article article)
+       => await _context.Articles.AddAsync(article);
     }
 }

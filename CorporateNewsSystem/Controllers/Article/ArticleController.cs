@@ -1,4 +1,5 @@
 ﻿using Api.Extensions;
+using Application.Commands.Article;
 using Application.Queries.Article;
 using Asp.Versioning;
 using MediatR;
@@ -19,5 +20,16 @@ namespace Api.Controllers.Article
             return result.ToActionResult(this);
 
         }
+
+        [Authorize(Roles ="Admin,Author")]
+        [MapToApiVersion(1)]
+        [HttpPost("admin")]
+        public async Task<IActionResult> CreateArticle([FromBody] AdminCreateArticleCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.ToActionResult(this);
+
+        }
+
     }
 }

@@ -18,5 +18,11 @@ namespace Domain.Models
             Id = Guid.NewGuid();
             LastModifiedDate = DateTime.Now;
         }
+        public BaseModel(string lastModifiedUser)
+        {
+            Id = Guid.NewGuid();
+            LastModifiedDate = DateTime.Now;
+            lastModifiedUser = lastModifiedUser;
+        }
     }
 }
