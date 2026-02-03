@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import articleService from '../services/articleService';
+import { useAuth } from '../hooks/useAuth';
 import './Articles.css';
 
 function Articles() {
@@ -11,6 +12,7 @@ function Articles() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const { user } = useAuth();
 
   const load = async () => {
     setLoading(true);
@@ -46,7 +48,71 @@ function Articles() {
   }, []);
 
   const openArticle = (article) => setSelectedArticle(article);
-  const closeArticle = () => setSelectedArticle(null);
+  const closeArticle = () => {
+    setIsEditing(false);
+    setFormState(null);
+    setSelectedArticle(null);
+  };
+
+  // Helper: check if current user can manage articles (Admin or Author)
+  const hasManageRole = () => {
+    if (!user?.roles) return false;
+    return user.roles.includes('Admin') || user.roles.includes('Author');
+  };
+
+  const isOwner = (article) => {
+    const authorId = article?.authorId || article?.authorUserId || article?.userId || article?.author?.id;
+    return user?.userId && authorId && user.userId === authorId;
+  };
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [formState, setFormState] = useState(null);
+
+  const startCreate = () => {
+    setFormState({ title: '', summary: '', content: '' });
+    setIsEditing(true);
+    setSelectedArticle(null);
+  };
+
+  const startEdit = (article) => {
+    setFormState({ ...article });
+    setIsEditing(true);
+    setSelectedArticle(article);
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormState((s) => ({ ...s, [name]: value }));
+  };
+
+  const submitForm = async (e) => {
+    e.preventDefault();
+    try {
+      if (selectedArticle && selectedArticle.id) {
+        await articleService.updateArticle(formState);
+      } else {
+        await articleService.createArticle(formState);
+      }
+      await load();
+      setIsEditing(false);
+      setFormState(null);
+      setSelectedArticle(null);
+    } catch (err) {
+      setError(err.message || 'Error saving article');
+    }
+  };
+
+  const handleDelete = async (article) => {
+    const ok = window.confirm('Are you sure you want to delete this article?');
+    if (!ok) return;
+    try {
+      await articleService.deleteArticle(article.id);
+      await load();
+      setSelectedArticle(null);
+    } catch (err) {
+      setError(err.message || 'Error deleting article');
+    }
+  };
 
   return (
     <div className="articles-page">
@@ -61,6 +127,12 @@ function Articles() {
         />
         <button type="submit">Search</button>
       </form>
+
+      {hasManageRole() && (
+        <div className="articles-actions">
+          <button onClick={startCreate}>Add Article</button>
+        </div>
+      )}
 
       {loading && <div className="articles-loading">Loading...</div>}
       {error && <div className="articles-error">{error}</div>}
@@ -90,16 +162,53 @@ function Articles() {
         </button>
       </div>
 
-      {selectedArticle && (
+      {(selectedArticle || isEditing) && (
         <div className="modal-overlay" onClick={closeArticle}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={closeArticle} aria-label="Close">×</button>
-            <h2 className="modal-title">{selectedArticle.title}</h2>
-            <div className="modal-meta">
-              <span className="modal-author">{selectedArticle.authorName}</span>
-              <span className="modal-date">{new Date(selectedArticle.publishedDate).toLocaleString()}</span>
-            </div>
-            <p className="modal-summary">{selectedArticle.summary}</p>
+
+            {isEditing ? (
+              <form onSubmit={submitForm} className="article-form">
+                <h2>{selectedArticle ? 'Edit Article' : 'Create Article'}</h2>
+                <div className="form-group">
+                  <label>Title</label>
+                  <input name="title" value={formState?.title || ''} onChange={handleFormChange} required />
+                </div>
+                <div className="form-group">
+                  <label>Summary</label>
+                  <textarea name="summary" value={formState?.summary || ''} onChange={handleFormChange} />
+                </div>
+                <div className="form-group">
+                  <label>Content</label>
+                  <textarea name="content" value={formState?.content || ''} onChange={handleFormChange} />
+                </div>
+                <div className="form-actions">
+                  <button type="submit">Save</button>
+                  <button type="button" onClick={closeArticle}>Cancel</button>
+                </div>
+              </form>
+            ) : (
+              <>
+                <h2 className="modal-title">{selectedArticle.title}</h2>
+                <div className="modal-meta">
+                  <span className="modal-author">{selectedArticle.authorName}</span>
+                  <span className="modal-date">{new Date(selectedArticle.publishedDate).toLocaleString()}</span>
+                </div>
+                <p className="modal-summary">{selectedArticle.summary}</p>
+
+                {hasManageRole() && (
+                  <div className="modal-actions">
+                    {user?.roles?.includes('Admin') || isOwner(selectedArticle) ? (
+                      <>
+                        <button onClick={() => startEdit(selectedArticle)}>Edit</button>
+                        <button onClick={() => handleDelete(selectedArticle)}>Delete</button>
+                      </>
+                    ) : null}
+                  </div>
+                )}
+              </>
+            )}
+
           </div>
         </div>
       )}

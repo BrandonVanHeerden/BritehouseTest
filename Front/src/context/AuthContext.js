@@ -22,7 +22,22 @@ export const AuthProvider = ({ children }) => {
           const currentTime = Date.now() / 1000;
 
           if (decoded.exp > currentTime) {
-            setUser(JSON.parse(savedUser));
+            const saved = JSON.parse(savedUser);
+
+            // Extract role(s) from token (support common claim names)
+            const roles =
+              decoded.role || decoded.roles || decoded['roles'] ||
+              decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
+              null;
+
+            // Normalize roles to array
+            const normalizedRoles = Array.isArray(roles)
+              ? roles
+              : roles
+              ? [roles]
+              : [];
+
+            setUser({ ...saved, roles: normalizedRoles });
           } else {
             // Token expired
             localStorage.removeItem('authToken');
@@ -58,9 +73,25 @@ export const AuthProvider = ({ children }) => {
       const accessToken = value.accessToken || value.token || null;
       const refresh = value.refreshToken || null;
 
+      // Decode token to get roles and other claims
+      let decoded = null;
+      try {
+        if (accessToken) decoded = jwtDecode(accessToken);
+      } catch (e) {
+        decoded = null;
+      }
+
+      const roles =
+        decoded?.role || decoded?.roles || decoded?.['roles'] ||
+        decoded?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
+        null;
+
+      const normalizedRoles = Array.isArray(roles) ? roles : roles ? [roles] : [];
+
       const userData = {
         userId: value.userId,
         email: value.email,
+        roles: normalizedRoles,
       };
 
       // Store token and user info

@@ -23,4 +23,37 @@ const listArticles = async ({ pageNumber = 1, pageSize = 10, searchTerm = null, 
   }
 };
 
-export default { listArticles };
+const createArticle = async (article) => {
+  try {
+    const response = await axiosInstance.post('/Article/admin/create', article);
+    const data = response.data;
+    if (data?.isSuccess) return data.value;
+    throw new Error(data?.error?.message || 'Failed to create article');
+  } catch (err) {
+    throw err;
+  }
+};
+
+const updateArticle = async (article) => {
+  try {
+    const response = await axiosInstance.put('/Article/admin/update', article);
+    const data = response.data;
+    if (data?.isSuccess) return data.value;
+    throw new Error(data?.error?.message || 'Failed to update article');
+  } catch (err) {
+    throw err;
+  }
+};
+
+const deleteArticle = async (id) => {
+  try {
+    const response = await axiosInstance.delete('/Article/admin/delete', { params: { id } });
+    const data = response.data;
+    if (data?.isSuccess) return data.value;
+    throw new Error(data?.error?.message || 'Failed to delete article');
+  } catch (err) {
+    throw err;
+  }
+};
+
+export default { listArticles, createArticle, updateArticle, deleteArticle };
