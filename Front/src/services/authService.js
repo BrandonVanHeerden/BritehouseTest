@@ -2,11 +2,13 @@ import axiosInstance from './axiosInstance';
 
 // Authentication endpoints
 export const authService = {
-  // Login with email and password (API expects SignInQuery with Email, Password)
+  // Login with email and password (SignInQuery via GET with query params)
   login: (email, password) => {
     return axiosInstance.get('/Authentication/sign-in', {
-      Email: email,
-      Password: password,
+      params: {
+        Email: email,
+        Password: password,
+      },
     });
   },
 
