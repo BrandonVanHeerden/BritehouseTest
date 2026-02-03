@@ -39,8 +39,8 @@ function App() {
           />
 
           {/* Default redirect */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/" element={<Navigate to="/articles" replace />} />
+          <Route path="*" element={<Navigate to="/articles" replace />} />
           <Route path="/articles" element={<Articles />} />
         </Routes>
       </AuthProvider>
