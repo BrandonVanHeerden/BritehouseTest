@@ -34,9 +34,9 @@ const createArticle = async (article) => {
   }
 };
 
-const updateArticle = async (article) => {
+const updateArticle = async (id, contract) => {
   try {
-    const response = await axiosInstance.put('/Article/admin/update', article);
+    const response = await axiosInstance.put(`/Article/admin/update/${id}`, contract);
     const data = response.data;
     if (data?.isSuccess) return data.value;
     throw new Error(data?.error?.message || 'Failed to update article');

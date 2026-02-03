@@ -89,7 +89,14 @@ function Articles() {
     e.preventDefault();
     try {
       if (selectedArticle && selectedArticle.id) {
-        await articleService.updateArticle(formState);
+        const contract = {
+          Title: formState.title,
+          Summary: formState.summary,
+          Content: formState.content,
+          EndDate: formState.endDate ?? null,
+        };
+
+        await articleService.updateArticle(selectedArticle.id, contract);
       } else {
         await articleService.createArticle(formState);
       }
