@@ -202,7 +202,9 @@ function Articles() {
                   <span className="modal-date">{new Date(selectedArticle.publishedDate).toLocaleString()}</span>
                 </div>
                 <p className="modal-summary">{selectedArticle.summary}</p>
-
+                {selectedArticle.content && (
+                  <div className="modal-content-body" dangerouslySetInnerHTML={{ __html: selectedArticle.content }} />
+                )}
                 {hasManageRole() && (
                   <div className="modal-actions">
                     {user?.roles?.includes('Admin') || isOwner(selectedArticle) ? (
