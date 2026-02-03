@@ -46,14 +46,30 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       const response = await authService.login(email, password);
-      const { token, user: userData } = response.data;
+      const data = response.data;
+
+      if (!data?.isSuccess) {
+        const msg = data?.error?.message || 'Login failed';
+        setError(msg);
+        throw new Error(msg);
+      }
+
+      const value = data.value || {};
+      const accessToken = value.accessToken || value.token || null;
+      const refresh = value.refreshToken || null;
+
+      const userData = {
+        userId: value.userId,
+        email: value.email,
+      };
 
       // Store token and user info
-      localStorage.setItem('authToken', token);
+      if (accessToken) localStorage.setItem('authToken', accessToken);
+      if (refresh) localStorage.setItem('refreshToken', refresh);
       localStorage.setItem('user', JSON.stringify(userData));
 
       setUser(userData);
-      return response.data;
+      return data;
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || 'Login failed. Please try again.';

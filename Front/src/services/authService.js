@@ -2,9 +2,12 @@ import axiosInstance from './axiosInstance';
 
 // Authentication endpoints
 export const authService = {
-  // Login with email and password
+  // Login with email and password (API expects SignInQuery with Email, Password)
   login: (email, password) => {
-    return axiosInstance.post('/auth/login', { email, password });
+    return axiosInstance.post('/api/v1/Authentication/sign-in', {
+      Email: email,
+      Password: password,
+    });
   },
 
   // Register a new user
