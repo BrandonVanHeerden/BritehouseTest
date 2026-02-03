@@ -50,6 +50,36 @@
   gap: 12px;
 }
 
+/* Table layout */
+.articles-table-wrap {
+  overflow-x: auto;
+  margin-top: 8px;
+}
+.articles-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+}
+.articles-table thead th {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 2px solid #eee;
+  font-weight: 600;
+  background: #fafafa;
+}
+.articles-table tbody td {
+  padding: 12px;
+  border-bottom: 1px solid #f2f2f2;
+  vertical-align: top;
+}
+.article-row:hover {
+  background: #fbfbfb;
+}
+.article-title-cell { font-weight: 600; }
+.article-summary-cell { color: #444; max-width: 420px; }
+.article-author-cell, .article-date-cell { color: #666; font-size: 0.95rem; }
+
 .articles-pagination {
   display: flex;
   align-items: center;

@@ -144,18 +144,28 @@ function Articles() {
       {loading && <div className="articles-loading">Loading...</div>}
       {error && <div className="articles-error">{error}</div>}
 
-      <ul className="articles-list">
-        {items.map((a) => (
-          <li key={a.id} className="article-item" onClick={() => openArticle(a)} role="button" tabIndex={0}>
-            <h3 className="article-title">{a.title}</h3>
-            <p className="article-summary">{a.summary}</p>
-            <div className="article-meta">
-              <span className="article-author">{a.authorName}</span>
-              <span className="article-date">{new Date(a.publishedDate).toLocaleString()}</span>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className="articles-table-wrap">
+        <table className="articles-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Summary</th>
+              <th>Author</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((a) => (
+              <tr key={a.id} className="article-row" onClick={() => openArticle(a)} role="button" tabIndex={0}>
+                <td className="article-title-cell">{a.title}</td>
+                <td className="article-summary-cell">{a.summary}</td>
+                <td className="article-author-cell">{a.authorName}</td>
+                <td className="article-date-cell">{new Date(a.publishedDate).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <div className="articles-pagination">
         <button disabled={pageNumber <= 1} onClick={() => setPageNumber((p) => Math.max(1, p - 1))}>
