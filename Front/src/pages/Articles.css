@@ -1,0 +1,115 @@
+.articles-page {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 12px;
+}
+
+.articles-search {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.articles-search input {
+  flex: 1;
+  padding: 8px 10px;
+}
+
+.articles-search button {
+  padding: 8px 12px;
+}
+
+.articles-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.article-item {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 0;
+}
+
+.article-item {
+  cursor: pointer;
+}
+
+.article-title {
+  margin: 0 0 6px 0;
+}
+
+.article-summary {
+  margin: 0 0 8px 0;
+  color: #444;
+}
+
+.article-meta {
+  font-size: 0.85rem;
+  color: #666;
+  display: flex;
+  gap: 12px;
+}
+
+.articles-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.articles-loading,
+.articles-error {
+  text-align: center;
+  margin: 12px 0;
+}
+
+/* header nav styling fallback if App.css doesn't have it */
+.app-header nav {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+}
+
+.app-header nav a {
+  color: #333;
+  text-decoration: none;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-content {
+  background: #fff;
+  max-width: 720px;
+  width: 100%;
+  border-radius: 6px;
+  padding: 20px 24px;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.modal-close {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.modal-title { margin: 0 0 8px 0; }
+.modal-meta { color: #666; font-size: 0.9rem; display:flex; gap:12px; margin-bottom:12px; }
+.modal-summary { color: #333; line-height:1.5; }
