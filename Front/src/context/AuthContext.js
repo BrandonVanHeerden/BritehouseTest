@@ -79,25 +79,47 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Register function
-  const register = useCallback(async (email, password, firstName, lastName) => {
-    try {
-      setError(null);
-      const response = await authService.register(email, password, firstName, lastName);
-      const { token, user: userData } = response.data;
+  const register = useCallback(
+    async (email, password, firstName, lastName) => {
+      try {
+        setError(null);
 
-      // Store token and user info
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('user', JSON.stringify(userData));
+        // Map available fields to SignUpCommand expected by API
+        const Name = firstName || '';
+        const Surname = lastName || '';
+        const Email = email || '';
+        const Cell = '';
+        const Id = '';
+        const Password = password || '';
+        const Role = 'User';
 
-      setUser(userData);
-      return response.data;
-    } catch (err) {
-      const errorMessage =
-        err.response?.data?.message || 'Registration failed. Please try again.';
-      setError(errorMessage);
-      throw err;
-    }
-  }, []);
+        const response = await authService.register(
+          Name,
+          Surname,
+          Email,
+          Cell,
+          Id,
+          Password,
+          Role
+        );
+
+        const data = response.data;
+        if (!data?.isSuccess) {
+          const msg = data?.error?.message || 'Registration failed';
+          setError(msg);
+          throw new Error(msg);
+        }
+
+        return data.value;
+      } catch (err) {
+        const errorMessage =
+          err.response?.data?.message || 'Registration failed. Please try again.';
+        setError(errorMessage);
+        throw err;
+      }
+    },
+    []
+  );
 
   // Logout function
   const logout = useCallback(() => {

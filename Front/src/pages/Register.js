@@ -49,7 +49,8 @@ export const Register = () => {
         formData.firstName,
         formData.lastName
       );
-      navigate('/dashboard');
+      // After successful signup, redirect to login so user can sign in
+      navigate('/login');
     } catch (err) {
       console.error('Registration error:', err);
     } finally {
