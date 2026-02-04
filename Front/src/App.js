@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Articles from './pages/Articles';
 import './App.css';
+import './components/Header.css';
 import useAuth from './hooks/useAuth';
 
 function App() {
@@ -43,25 +44,39 @@ function App() {
 }
 
 function HeaderNav() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = '/login';
+  };
 
   return (
-    <header className="app-header">
-      <nav>
-        <Link to="/">Dashboard</Link>
-        <Link to="/articles">Articles</Link>
+    <nav className="navbar">
+      <div className="navbar-brand">
+        <h1>Britehouse</h1>
+        <div className="nav-links">
+          <Link to="/">Dashboard</Link>
+          <Link to="/articles">Articles</Link>
+        </div>
+      </div>
+
+      <div className="navbar-menu">
         {isAuthenticated ? (
-          <button onClick={() => { logout(); window.location.href = '/login'; }} style={{ marginLeft: 8 }}>
-            Logout
-          </button>
+          <>
+            <span className="user-name">Welcome, {user?.email || user?.userId || 'user'}!</span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </>
         ) : (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
+            <Link to="/login" className="login-link">Login</Link>
+            <Link to="/register" className="register-link">Register</Link>
           </>
         )}
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 }
 
