@@ -195,6 +195,51 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
+/* Improved modal header and actions */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.modal-title { margin: 0; font-size: 1.25rem; color: #222; }
+.modal-meta { color: #666; font-size: 0.9rem; display:flex; gap:12px; margin-bottom:8px; }
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.modal-actions button {
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid #e6e6e9;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal-actions button.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-color: transparent;
+}
+
+.modal-actions button.danger {
+  background: #fff6f6;
+  border-color: #ffdede;
+  color: #c33;
+}
+
+.modal-close:hover { transform: scale(1.05); }
+
+.modal-content { border-radius: 12px; padding: 22px 28px; }
+
 .modal-header {
   display: flex;
   align-items: flex-start;
