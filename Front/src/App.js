@@ -56,7 +56,7 @@ function HeaderNav() {
       <div className="navbar-brand">
         <h1>Britehouse</h1>
         <div className="nav-links">
-          <Link to="/">Dashboard</Link>
+          {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
           <Link to="/articles">Articles</Link>
         </div>
       </div>
