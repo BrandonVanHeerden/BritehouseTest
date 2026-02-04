@@ -18,7 +18,8 @@ namespace Infrastructure.Persistance.Configurations
             builder.ToTable("Articles");
 
             builder.HasKey(a => a.Id);
-
+            builder.Property(x => x.Id)
+                    .ValueGeneratedOnAdd();
             builder.Property(a => a.Title)
                 .HasMaxLength(250)
                 .IsRequired();

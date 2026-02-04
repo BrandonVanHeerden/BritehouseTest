@@ -24,7 +24,8 @@ namespace Infrastructure.Persistance.Configurations
             builder.ToTable("Roles");
 
             builder.HasKey(r => r.Id);
-
+            builder.Property(x => x.Id)
+                    .ValueGeneratedOnAdd();
             builder.Property(r => r.Name)
                 .HasMaxLength(100)
                 .IsRequired();
