@@ -67,6 +67,7 @@ function Articles() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [formState, setFormState] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
 
   const startCreate = () => {
     setFormState({ title: '', summary: '', content: '' });
@@ -83,10 +84,24 @@ function Articles() {
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormState((s) => ({ ...s, [name]: value }));
+    setError(null);
+    setFormErrors((prev) => ({ ...prev, [name]: null }));
   };
 
   const submitForm = async (e) => {
     e.preventDefault();
+    // Client-side validation: Title, Summary and Content are required
+    const errors = {};
+    if (!formState?.title || !formState?.title.toString().trim()) errors.title = 'Title is required';
+    if (!formState?.summary || !formState?.summary.toString().trim()) errors.summary = 'Summary is required';
+    if (!formState?.content || !formState?.content.toString().trim()) errors.content = 'Content is required';
+
+    if (Object.keys(errors).length) {
+      setFormErrors(errors);
+      setError('Please fix the errors in the form');
+      return;
+    }
+
     try {
       if (selectedArticle && selectedArticle.id) {
         const contract = {
@@ -210,15 +225,18 @@ function Articles() {
                 <h2>{selectedArticle ? 'Edit Article' : 'Create Article'}</h2>
                 <div className="form-group">
                   <label>Title</label>
-                  <input name="title" value={formState?.title || ''} onChange={handleFormChange} required />
+                  <input name="title" value={formState?.title || ''} onChange={handleFormChange} aria-invalid={!!formErrors.title} />
+                  {formErrors.title && <div className="field-error">{formErrors.title}</div>}
                 </div>
                 <div className="form-group">
                   <label>Summary</label>
-                  <textarea name="summary" value={formState?.summary || ''} onChange={handleFormChange} />
+                  <textarea name="summary" value={formState?.summary || ''} onChange={handleFormChange} aria-invalid={!!formErrors.summary} />
+                  {formErrors.summary && <div className="field-error">{formErrors.summary}</div>}
                 </div>
                 <div className="form-group">
                   <label>Content</label>
-                  <textarea name="content" value={formState?.content || ''} onChange={handleFormChange} />
+                  <textarea name="content" value={formState?.content || ''} onChange={handleFormChange} aria-invalid={!!formErrors.content} />
+                  {formErrors.content && <div className="field-error">{formErrors.content}</div>}
                 </div>
                 <div className="form-actions">
                   <button type="submit">Save</button>

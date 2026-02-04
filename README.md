@@ -10,7 +10,7 @@ The Api follows Clean Code Architecture
 The Api uses CQRS pattern to separate read and write logic
 In conjunction with CQRS, the api uses MediatR package, which is a nuget package that uses the Mediator design pattern, to decouple the controllers from the application and business logic. MediatR sends the request to the correct handler.
 The Api uses Repository pattern to decouple and seperate the database logic from business logic
-The Api uses Entity Framework Core to scaffold the database into Data Models
+The Api uses Entity Framework Core to scaffold the database.
 All the sensitive connection strings and keys are stored in the Api UserSecrets. A copy of these connection strings and keys will be provided by the project administrator. 
 The Api uses reflection for mapping repository abstraction (in Domain) with the concrete implementation (in Infrastructure). The naming of the abstraction and the implementation should be the same, with the exception that the abstraction should start with the "I" perfix, and both should end with the 'Repository' suffix. For Example: Abstraction --> IMyTestRepository ; Concrete Implementation --> MyTestRepository
 The Api also uses reflection for mapping service (in Domain) with the concrete implementation (in Application). The naming of the abstraction and the implementation should be the same, with the exception that the abstraction should start with the "I" perfix, and both should end with the 'Service' suffix. For Example: Abstraction --> IMyTestService ; Concrete Implementation --> MyTestService
@@ -37,6 +37,7 @@ React FrontEnd.
 
 A React-based frontend application integrated with a .NET Core 8 Web API using JWT authentication.
 
+Please ensure the api is running before using the Front End
 ## Features
 
 - **JWT Authentication**: Secure authentication with JWT tokens
