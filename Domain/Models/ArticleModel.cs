@@ -11,6 +11,7 @@ namespace Domain.Models
     string Title,
     string Summary,
     DateTime PublishedDate,
+    string Content,
     string AuthorName);
 
 }

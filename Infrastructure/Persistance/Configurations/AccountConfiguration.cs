@@ -16,7 +16,8 @@ namespace Infrastructure.Persistance.Configurations
             builder.ToTable("Accounts");
 
             builder.HasKey(a => a.Id);
-
+            builder.Property(x => x.Id)
+                    .ValueGeneratedOnAdd();
             builder.Property(a => a.Password)
                 .IsRequired();
 

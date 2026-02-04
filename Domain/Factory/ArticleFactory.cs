@@ -22,6 +22,7 @@ namespace Domain.Factory
         }
 
         public static Article Update(
+                                Guid id,
                                string title,
                                string summary,
                                string content,
@@ -29,7 +30,7 @@ namespace Domain.Factory
                                DateTime? endDate,
                                string createdBy)
         {
-            return new Article(title, summary, content, userId,  endDate, createdBy);
+            return new Article(id,title, summary, content, userId,  endDate, createdBy);
         }
     }
 }

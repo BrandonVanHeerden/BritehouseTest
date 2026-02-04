@@ -17,7 +17,8 @@ namespace Infrastructure.Persistance.Configurations
             builder.ToTable("Users");
 
             builder.HasKey(u => u.Id);
-
+            builder.Property(x => x.Id)
+                    .ValueGeneratedOnAdd();
             builder.Property(u => u.Name)
                 .HasMaxLength(150)
                 .IsRequired();

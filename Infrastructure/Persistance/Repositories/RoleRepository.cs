@@ -39,5 +39,36 @@ namespace Infrastructure.Persistance.Repositories
                 .Where(ur => ur.IsActive == true)               
                 .ToListAsync();
         }
+        public async Task AddRolesToUserAsync(
+        Guid userId,
+        IEnumerable<Guid> roleIds,
+        CancellationToken cancellationToken)
+        {
+            var distinctRoleIds = roleIds.Distinct().ToList();
+
+            var existingRoleIds = await _context.UserRoles
+                .Where(ur => ur.UserId == userId &&
+                             distinctRoleIds.Contains(ur.RoleId))
+                .Select(ur => ur.RoleId)
+                .ToListAsync(cancellationToken);
+
+            var newRoleIds = distinctRoleIds
+                .Except(existingRoleIds)
+                .ToList();
+
+            if (!newRoleIds.Any())
+                return;
+
+            var userRoles = newRoleIds.Select(roleId =>
+                new UserRole
+                {
+                    UserId = userId,
+                    RoleId = roleId
+                });
+
+            await _context.UserRoles.AddRangeAsync(
+                userRoles,
+                cancellationToken);
+        }
     }
 }

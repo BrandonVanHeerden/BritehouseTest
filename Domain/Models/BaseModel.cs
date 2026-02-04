@@ -6,17 +6,24 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class BaseModel
+    public abstract class BaseModel
     {
-        public Guid Id { get; private set; } = Guid.NewGuid();
-        public bool IsActive { get; private set; }
-        public DateTime LastModifiedDate { get; private set; }
+        public Guid Id { get; set; } 
+        public bool IsActive { get; set; }
+        public DateTime LastModifiedDate { get;  set; }
         public string LastModifiedUser { get; set; } = string.Empty;
 
         public BaseModel()
         {
-            Id = Guid.NewGuid();
+           // Id = Guid.NewGuid();
+            //LastModifiedDate = DateTime.Now;
+            //IsActive = true;
+        }
+        public BaseModel(Guid id, string lastModifiedUser) : this()
+        {
+            Id = id;
             LastModifiedDate = DateTime.Now;
+            lastModifiedUser = lastModifiedUser;
         }
         public BaseModel(string lastModifiedUser)
         {

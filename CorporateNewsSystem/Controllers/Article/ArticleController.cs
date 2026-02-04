@@ -3,6 +3,7 @@ using Application.Commands.Article;
 using Application.Common;
 using Application.Queries.Article;
 using Asp.Versioning;
+using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace Api.Controllers.Article
     {
         [AllowAnonymous]
         [MapToApiVersion(1)]
+        [ProducesResponseType(typeof(NewsResult<PagedList<ArticleModel>>), StatusCodes.Status200OK)]
         [HttpGet("list")]
         public async Task<IActionResult> GetArticleList([FromQuery]ListArticleQuery query,CancellationToken cancellationToken)
         {
@@ -34,9 +36,9 @@ namespace Api.Controllers.Article
         [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
         [MapToApiVersion(1)]
         [HttpDelete("admin/delete")]
-        public async Task<IActionResult> DeleteArticle([FromBody] AdminDeleteArticleCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteArticle([FromQuery] Guid Id, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(command, cancellationToken);
+            var result = await _mediator.Send(new AdminDeleteArticleCommand(Id), cancellationToken);
             return result.ToActionResult(this);
 
         }

@@ -14,7 +14,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Application.Commands
 {
-    public sealed record SignUpCommand(string Name, string Surname, string Email, string Cell, string Id, string Password, string Role) : IRequest<NewsResult<bool>>;
+    public sealed record SignUpCommand(string Name, string Surname, string Email, string Cell, string Id, string Password, IEnumerable<Guid> Roles) : IRequest<NewsResult<bool>>;
 
     public sealed class SignUpCommandHandler : IRequestHandler<SignUpCommand, NewsResult<bool>>
     {
@@ -34,11 +34,11 @@ namespace Application.Commands
         }
         public async Task<NewsResult<bool>> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
-             if (await _userRepository.ExistsByEmailAsync(request.Email))
-              {
-                  return NewsResult<bool>.Failure(
-                      new BaseNewsError("User Already Exists",StatusCodes.Status409Conflict));
-              }
+            if (await _userRepository.ExistsByEmailAsync(request.Email))
+            {
+                return NewsResult<bool>.Failure(
+                    new BaseNewsError("User Already Exists", StatusCodes.Status409Conflict));
+            }
 
             var user = UserFactory.Create(
                 request.Name,
@@ -55,11 +55,13 @@ namespace Application.Commands
             var account =
             AccountFactory.Create(user.Id, passwordHash, null, "sign up");
 
-            var role =
-                await _roleRepository.GetByNameAsync("Reader");
+            await _roleRepository.AddRolesToUserAsync(
+                                            user.Id,
+                                            request.Roles,
+                                            cancellationToken);
 
 
-           // await _userRepository.AddUserRole(user.Id, role.Id);
+            // await _userRepository.AddUserRole(user.Id, role.Id);
             await _userRepository.Add(user);
             await _accountsRepository.Add(account);
             var inserted = await _unitOfWork.SaveChangesAsync(cancellationToken);

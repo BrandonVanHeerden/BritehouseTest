@@ -22,13 +22,14 @@ namespace Domain.Models
         }
         public User(string name, string surname, string email, string cell, string idNumber, string lastModifiedUser)
         {
-            new BaseModel();
+            Id = Guid.NewGuid();
             Name = name;
             Surname = surname;
             Email = email;
             CellNo = cell;
             IdNumber = idNumber;
             LastModifiedUser = lastModifiedUser;
+            IsActive = true;
         }     
 
     }

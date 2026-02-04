@@ -20,6 +20,7 @@ namespace Domain.Models
         }
         public Account(Guid userId, byte[] password, string refreshToken, string lastModifiedUser)
         {
+            IsActive = true;
             UserId = userId;
             Password = password;
             RefreshToken = refreshToken;

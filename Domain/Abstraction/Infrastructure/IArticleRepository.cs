@@ -14,5 +14,6 @@ namespace Domain.Abstraction.Infrastructure
         Task<Article?> GetByIdAsync(Guid id, CancellationToken ct);
         Task<PagedList<ArticleModel>> GetPagedArticlesAsync(int pageNumber, int pageSize, string? searchTerm, bool onlyActive, CancellationToken cancellationToken = default);
         void Remove(Article article);
+        void Update(Article article);
     }
 }
