@@ -88,6 +88,52 @@
   margin-top: 18px;
 }
 
+.page-btn {
+  background: white;
+  border: 1px solid #e6e6e6;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  min-width: 48px;
+  color: #333;
+  font-weight: 600;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #f7f7fb;
+}
+
+.page-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  color: #888;
+}
+
+.page-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+}
+
+.page-info {
+  font-weight: 600;
+  color: #333;
+  min-width: 160px;
+  text-align: center;
+}
+
+.article-summary-cell {
+  color: #444;
+  max-width: 420px;
+  /* ensure truncation doesn't expand row height */
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
 .articles-loading,
 .articles-error {
   text-align: center;

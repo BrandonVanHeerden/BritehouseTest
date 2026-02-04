@@ -121,6 +121,27 @@ function Articles() {
     }
   };
 
+  // Helper to truncate long summaries to a fixed number of words
+  const truncateWords = (text, wordLimit = 30) => {
+    if (!text) return '';
+    const words = text.split(/\s+/);
+    if (words.length <= wordLimit) return text;
+    return words.slice(0, wordLimit).join(' ') + '...';
+  };
+
+  // Generate a compact pagination range centered on current page
+  const getPageRange = (current, total, maxButtons = 5) => {
+    const half = Math.floor(maxButtons / 2);
+    let start = Math.max(1, current - half);
+    let end = Math.min(total, start + maxButtons - 1);
+    if (end - start + 1 < maxButtons) {
+      start = Math.max(1, end - maxButtons + 1);
+    }
+    const range = [];
+    for (let i = start; i <= end; i++) range.push(i);
+    return range;
+  };
+
   return (
     <div className="articles-page">
       <h1>Articles</h1>
@@ -158,7 +179,7 @@ function Articles() {
             {items.map((a) => (
               <tr key={a.id} className="article-row" onClick={() => openArticle(a)} role="button" tabIndex={0}>
                 <td className="article-title-cell">{a.title}</td>
-                <td className="article-summary-cell">{a.summary}</td>
+                <td className="article-summary-cell">{truncateWords(a.summary, 28)}</td>
                 <td className="article-author-cell">{a.authorName}</td>
                 <td className="article-date-cell">{new Date(a.publishedDate).toLocaleString()}</td>
               </tr>
@@ -168,13 +189,13 @@ function Articles() {
       </div>
 
       <div className="articles-pagination">
-        <button disabled={pageNumber <= 1} onClick={() => setPageNumber((p) => Math.max(1, p - 1))}>
+        <button className="page-btn" disabled={pageNumber <= 1} onClick={() => setPageNumber((p) => Math.max(1, p - 1))}>
           Prev
         </button>
-        <span>
-          Page {pageNumber} of {totalPages}
-        </span>
-        <button disabled={pageNumber >= totalPages} onClick={() => setPageNumber((p) => Math.min(totalPages, p + 1))}>
+
+        <span className="page-info">Page {pageNumber} of {totalPages}</span>
+
+        <button className="page-btn" disabled={pageNumber >= totalPages} onClick={() => setPageNumber((p) => Math.min(totalPages, p + 1))}>
           Next
         </button>
       </div>
