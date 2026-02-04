@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Articles from './pages/Articles';
 import './App.css';
+import useAuth from './hooks/useAuth';
 
 function App() {
   return (
@@ -14,14 +15,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <div>
-          <header className="app-header">
-            <nav>
-              <Link to="/">Dashboard</Link>
-              <Link to="/articles">Articles</Link>
-              <Link to="/login">Login</Link>
-              <Link to="/register">Register</Link>
-            </nav>
-          </header>
+          <HeaderNav />
         </div>
         <Routes>
           {/* Public routes */}
@@ -45,6 +39,29 @@ function App() {
         </Routes>
       </AuthProvider>
     </BrowserRouter>
+  );
+}
+
+function HeaderNav() {
+  const { isAuthenticated, logout } = useAuth();
+
+  return (
+    <header className="app-header">
+      <nav>
+        <Link to="/">Dashboard</Link>
+        <Link to="/articles">Articles</Link>
+        {isAuthenticated ? (
+          <button onClick={() => { logout(); window.location.href = '/login'; }} style={{ marginLeft: 8 }}>
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        )}
+      </nav>
+    </header>
   );
 }
 
