@@ -12,17 +12,7 @@ export const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <h1>Britehouse</h1>
-        </div>
-        <div className="navbar-menu">
-          <span className="user-name">Welcome, {user?.firstName}!</span>
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
-      </nav>
+      {/* Global header is used app-wide; remove duplicate navbar here */}
 
       <div className="dashboard-content">
         <div className="container">
