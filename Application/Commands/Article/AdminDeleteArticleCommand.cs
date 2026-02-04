@@ -64,6 +64,9 @@ namespace Application.Commands.Article
             }
             else if (isAuthor)
             {
+                //TODO: Implement soft delete for author. To be reviewed by Admin
+                _articleRepository.Remove(article);
+
                 //article.SoftDelete(_currentUser.Email);
             }
 
