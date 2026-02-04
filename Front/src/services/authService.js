@@ -13,16 +13,20 @@ export const authService = {
   },
 
   // Register a new user (SignUpCommand)
-  register: (Name, Surname, Email, Cell, Id, Password, Role) => {
-    return axiosInstance.post('/Account/sign-up', {
+  register: (Name, Surname, Email, Cell, Id, Password, Role, Roles) => {
+    // Roles is expected to be an array of role GUIDs (optional). Keep Role for backward compatibility.
+    const payload = {
       Name,
       Surname,
       Email,
       Cell,
       Id,
       Password,
-      Role,
-    });
+    };
+    if (Role) payload.Role = Role;
+    if (Roles && Array.isArray(Roles)) payload.Roles = Roles;
+
+    return axiosInstance.post('/Account/sign-up', payload);
   },
 
   // Refresh token

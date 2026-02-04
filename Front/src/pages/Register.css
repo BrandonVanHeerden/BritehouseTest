@@ -13,7 +13,7 @@
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 450px;
+  max-width: 400px;
 }
 
 .register-card h1 {
@@ -114,4 +114,24 @@ button:disabled {
 
 .login-link a:hover {
   text-decoration: underline;
+}
+
+.roles-group .roles-options {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.roles-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.roles-help {
+  display: block;
+  margin-top: 6px;
+  color: #666;
+  font-size: 12px;
 }

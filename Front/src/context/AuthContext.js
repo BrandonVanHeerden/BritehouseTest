@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }) => {
 
   // Register function
   const register = useCallback(
-    async (email, password, firstName, lastName) => {
+    async (email, password, firstName, lastName, roles = []) => {
       try {
         setError(null);
 
@@ -122,7 +122,8 @@ export const AuthProvider = ({ children }) => {
         const Cell = '';
         const Id = '';
         const Password = password || '';
-        const Role = 'User';
+        // Role kept for compatibility; prefer sending Roles array when provided
+        const Role = roles && roles.length === 1 ? roles[0] : 'User';
 
         const response = await authService.register(
           Name,
@@ -131,7 +132,8 @@ export const AuthProvider = ({ children }) => {
           Cell,
           Id,
           Password,
-          Role
+          Role,
+          roles && roles.length ? roles : undefined
         );
 
         const data = response.data;

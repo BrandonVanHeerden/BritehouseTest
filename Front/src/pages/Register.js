@@ -11,6 +11,7 @@ export const Register = () => {
     password: '',
     confirmPassword: '',
   });
+  const [selectedRoles, setSelectedRoles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [validationError, setValidationError] = useState('');
   const navigate = useNavigate();
@@ -23,6 +24,13 @@ export const Register = () => {
       [name]: value,
     }));
     setValidationError('');
+  };
+
+  const toggleRole = (roleId) => {
+    setSelectedRoles((prev) => {
+      if (prev.includes(roleId)) return prev.filter((r) => r !== roleId);
+      return [...prev, roleId];
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -47,7 +55,8 @@ export const Register = () => {
         formData.email,
         formData.password,
         formData.firstName,
-        formData.lastName
+        formData.lastName,
+        selectedRoles
       );
       // After successful signup, redirect to login so user can sign in
       navigate('/login');
@@ -141,6 +150,45 @@ export const Register = () => {
               placeholder="Confirm password"
               disabled={isLoading}
             />
+          </div>
+
+          <div className="form-group roles-group">
+            <label>Roles</label>
+            <div className="roles-options">
+              <label>
+                <input
+                  type="checkbox"
+                  value="55676D85-48D3-4995-B827-790FC0634600"
+                  checked={selectedRoles.includes('55676D85-48D3-4995-B827-790FC0634600')}
+                  onChange={() => toggleRole('55676D85-48D3-4995-B827-790FC0634600')}
+                  disabled={isLoading}
+                />
+                Admin
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  value="CBC3B84E-BEAC-40B7-B31D-0C2FBC527148"
+                  checked={selectedRoles.includes('CBC3B84E-BEAC-40B7-B31D-0C2FBC527148')}
+                  onChange={() => toggleRole('CBC3B84E-BEAC-40B7-B31D-0C2FBC527148')}
+                  disabled={isLoading}
+                />
+                Author
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  value="5F78F802-1FA2-4AF6-BC81-269AA1B5181A"
+                  checked={selectedRoles.includes('5F78F802-1FA2-4AF6-BC81-269AA1B5181A')}
+                  onChange={() => toggleRole('5F78F802-1FA2-4AF6-BC81-269AA1B5181A')}
+                  disabled={isLoading}
+                />
+                Reader
+              </label>
+            </div>
+            <small className="roles-help">Select one or more roles to assign to this account.</small>
           </div>
 
           <button type="submit" disabled={isLoading}>
