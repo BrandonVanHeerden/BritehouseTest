@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistance.DataModels
 {
-    public class Article: BaseModel
+
+    public class Article : BaseModel
     {
 
         public string Title { get; private set; } = null!;
@@ -21,28 +22,45 @@ namespace Infrastructure.Persistance.DataModels
         public DateTime? EndDate { get; private set; }
         public Article()
         {
-            
+
         }
         public Article(string title, string summary, string content, Guid userId, DateTime publishedDate, DateTime? endDate, string createdBy)
         {
-            new BaseModel(createdBy);
             Title = title;
             Summary = summary;
             Content = content;
             UserId = userId;
             PublishedDate = publishedDate;
             EndDate = endDate;
+            IsActive = true;
 
         }
-        public Article(string title, string summary, string content, Guid userId,  DateTime? endDate, string createdBy)
+        public Article(Guid id, string title, string summary, string content, Guid userId, DateTime? endDate, string createdBy)
         {
-            new BaseModel(createdBy);
+            Id = id;
+            LastModifiedUser = createdBy;
             Title = title;
             Summary = summary;
             Content = content;
             UserId = userId;
             EndDate = endDate;
+            LastModifiedDate = DateTime.Now;
+        }
 
+        public void Update(
+                string title,
+                string summary,
+                string content,
+                DateTime? endDate,
+                string modifiedBy)
+        {
+            Title = title;
+            Summary = summary;
+            Content = content;
+            EndDate = endDate;
+
+            LastModifiedDate = DateTime.UtcNow;
+            LastModifiedUser = modifiedBy;
         }
 
     }

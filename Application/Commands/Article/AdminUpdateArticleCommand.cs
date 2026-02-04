@@ -57,7 +57,7 @@ namespace Application.Commands.Article
 
             if (article is null || !article.IsActive)
                 return NewsResult<bool>.Failure(new BaseNewsError("Article does not exist or is not active",404));
-
+            
             var userId = _currentUserService.GetCurrentUserId();
 
             var roles = await _roleRepository.GetRolesForUserAsync(userId);
@@ -67,13 +67,12 @@ namespace Application.Commands.Article
             if (!isAdmin && article.UserId != userId)
                 return NewsResult<bool>.Failure(new BaseNewsError("Insufficient Permissions",403));
 
-            ArticleFactory.Update(
-                request.Title,
-                request.Summary,
-                request.Content,
-                userId,
-                request.EndDate,
-                _currentUserService.GetCurrentUserAccount());
+            article.Update(
+                     request.Title,
+                     request.Summary,
+                     request.Content,
+                     request.EndDate,
+                     _currentUserService.GetCurrentUserAccount());
 
             await _unitOfWorkRepository.SaveChangesAsync(cancellationToken);
 

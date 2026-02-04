@@ -13,8 +13,13 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Application.Commands.Article
 {
-    public sealed record AdminDeleteArticleCommand(Guid ArticleId) : IRequest<NewsResult<bool>>
+    public sealed record AdminDeleteArticleCommand : IRequest<NewsResult<bool>>
     {
+        public Guid ArticleId { get; set; }
+        public AdminDeleteArticleCommand(Guid id)
+        {
+            ArticleId = id;
+        }
     }
 
     public sealed class AdminDeleteArticleCommandHandler : IRequestHandler<AdminDeleteArticleCommand, NewsResult<bool>>

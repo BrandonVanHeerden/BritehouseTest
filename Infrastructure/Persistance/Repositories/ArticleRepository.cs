@@ -50,6 +50,7 @@ namespace Infrastructure.Persistance.Repositories
                     a.Title,
                     a.Summary,
                     a.PublishedDate,
+                    a.Content,
                     $"{a.User.Name} {a.User.Surname}"))
                 .ToListAsync(cancellationToken);
 
@@ -57,7 +58,8 @@ namespace Infrastructure.Persistance.Repositories
         }
         public async Task Add(Article article)
        => await _context.Articles.AddAsync(article);
-
+        public void Update(Article article)
+      =>  _context.Articles.Update(article);
         public async Task<Article?> GetByIdAsync(Guid id, CancellationToken ct)
         {
             return await _context.Articles
