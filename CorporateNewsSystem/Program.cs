@@ -15,6 +15,16 @@ using System.Security.Claims;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+    options.AddPolicy(name: "CorporateNewsPolicy", policyBuilder =>
+    {
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.SetIsOriginAllowed(_ => true);
+        policyBuilder.AllowCredentials();
+        policyBuilder.WithExposedHeaders("x-redirect-uri");
+    })
+);
 // Add services to the container.
 builder.Services.AddSwaggerGen(options =>
 {
@@ -107,6 +117,7 @@ builder.Services.AddSingleton(jwtConfig!);
 var applicationAssembly = Assembly.Load("Application");
 builder.Services.AddMediatR(m => m.RegisterServicesFromAssembly(applicationAssembly));
 var app = builder.Build();
+app.UseCors("CorporateNewsPolicy");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
